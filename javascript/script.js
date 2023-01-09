@@ -25,29 +25,36 @@ function showBooks() {
     myLibrary.map((item, index) => {
         const bookTR = document.createElement("tr");
         // const bookTD = document.createElement("td");
+        const readMessage = item.read ? "Read" : "Not Read";
+        const readBtnColor = item.read ? "success" : "dark";
         bookTR.innerHTML += `
             <td>${item.title}</td>
             <td>${item.author}</td>
             <td>${item.pages}</td>
-            <td>${item.read}</td>
             <td>
                 <button 
+                    class="button is-${readBtnColor} is-small toggle-read"
+                    value=${index}
+                >
+                    ${readMessage}
+                </button>
+            </td>
+            <td>
+                <button
                     class="button is-danger is-inverted is-small remove"
                     value=${index}
                 >
-                    Delete
+                <span class="icon">
+                    <i class="fa-solid fa-trash"></i>
+                </span>
+                    
                 </button>
             </td>
         `;
-
-        // for (let index = 0; index < Object.keys(item).length; index++) {
-        //     const bookTD = document.createElement("td");
-        //     bookTD.innerText = item[Object.keys(item)[index]];
-        //     bookTR.appendChild(bookTD);
-        // }
         booksTable.appendChild(bookTR);
     });
     handlerEventListenerToRemove();
+    handlerEventListenerToToggleRead();
 }
 
 function handlerEventListenerToRemove() {
@@ -60,6 +67,23 @@ function handlerEventListenerToRemove() {
             { once: true }
         );
     });
+}
+
+function handlerEventListenerToToggleRead() {
+    [...document.querySelectorAll(".toggle-read")].map((item) => {
+        item.addEventListener(
+            "click",
+            (event) => {
+                toggleRead(~~event.target.value);
+            },
+            { once: true }
+        );
+    });
+}
+
+function toggleRead(index) {
+    myLibrary[index].read = !myLibrary[index].read;
+    showBooks();
 }
 
 const form = document.getElementById("book-form");
@@ -84,10 +108,10 @@ document.addEventListener("DOMContentLoaded", function() {
         read: false,
     });
     addBookToLibrary({
-        title: "The Hobbit by J.R.R.",
-        author: "Tolkien",
-        pages: 295,
-        read: false,
+        title: "The Hunger Games",
+        author: "Suzanne Collins",
+        pages: 374,
+        read: true,
     });
     showBooks();
 });
