@@ -12,6 +12,19 @@ function addBookToLibrary(title, author, pages, read) {
     myLibrary.push(book);
 }
 
-addBookToLibrary("The Hobbit by J.R.R.", "Tolkien", 295, false);
+function showBooks() {
+    const booksTable = document.querySelector(".books");
 
-console.log(myLibrary);
+    myLibrary.map((item) => {
+        const bookTR = document.createElement("tr");
+
+        for (let index = 0; index < Object.keys(item).length; index++) {
+            const bookTD = document.createElement("td");
+            bookTD.innerText = item[Object.keys(item)[index]];
+            bookTR.appendChild(bookTD);
+        }
+        booksTable.appendChild(bookTR);
+    });
+}
+addBookToLibrary("The Hobbit by J.R.R.", "Tolkien", 295, false);
+showBooks();
